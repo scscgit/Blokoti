@@ -96,6 +96,8 @@ namespace Blokoti.Game.Scripts.Actors.Players
             var targetRow = Row;
             var targetCol = Col;
             var move = false;
+            var lastTileRow = targetRow;
+            var lastTileCol = targetCol;
             if (horizontal < 0)
             {
                 targetRow--;
@@ -120,9 +122,11 @@ namespace Blokoti.Game.Scripts.Actors.Players
             if (move)
             {
                 // Handle wrong target and cancel the movement
-                if (_tileManager.GetTile(targetRow, targetCol) == null)
+                if (_tileManager.GetTile(targetRow, targetCol) == null || _tileManager.GetTile(targetRow, targetCol).transform.lossyScale.y>0.25f)
                 {
-                    Debug.Log("Player's movement target to " + targetRow + ":" + targetRow + " unavailable");
+                    Debug.Log("Player's movement target to " + TargetRow + ":" + TargetCol + " unavailable");
+                    targetRow = lastTileRow;
+                    targetCol = lastTileCol;
                     return;
                 }
 
