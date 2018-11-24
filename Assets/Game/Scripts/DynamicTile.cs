@@ -31,6 +31,15 @@ namespace Blokoti.Game.Scripts
             {
                 ApplyType(type + 1);
             }
+            if (_isSelected && Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                transform.localScale += new Vector3(0, 0.5F, 0);
+            }
+            if (_isSelected && Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                if (transform.localScale.y > 0.5F)
+                    transform.localScale -= new Vector3(0, 0.5F, 0);
+            }
         }
 
         private void ApplyType(int newType)
@@ -46,14 +55,19 @@ namespace Blokoti.Game.Scripts
                 case 0:
                     transform.Find("Green").gameObject.SetActive(true);
                     transform.Find("White").gameObject.SetActive(false);
+                    transform.Find("Blue").gameObject.SetActive(false);
                     break;
                 case 1:
                     // todo
                     transform.Find("Green").gameObject.SetActive(false);
                     transform.Find("White").gameObject.SetActive(true);
+                    transform.Find("Blue").gameObject.SetActive(false);
                     break;
                 case 2:
                     // todo
+                    transform.Find("Green").gameObject.SetActive(false);
+                    transform.Find("White").gameObject.SetActive(false);
+                    transform.Find("Blue").gameObject.SetActive(true);
                     break;
             }
         }
