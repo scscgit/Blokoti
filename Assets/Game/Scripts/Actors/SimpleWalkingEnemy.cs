@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Blokoti.Game.Scripts.Managers;
 using UnityEngine;
@@ -28,7 +27,7 @@ namespace Blokoti.Game.Scripts.Actors
         {
             Acting = true;
             var walkingGoal = walkingTemplate[walkingTemplateIndex++];
-            if (walkingTemplateIndex > walkingTemplate.Count)
+            if (walkingTemplateIndex >= walkingTemplate.Count)
             {
                 walkingTemplateIndex = 0;
             }
