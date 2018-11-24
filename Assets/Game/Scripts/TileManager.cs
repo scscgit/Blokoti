@@ -32,8 +32,10 @@ namespace Blokoti.Game.Scripts
             {
                 _tileActors.Add(new List<MonoBehaviour>(maxSizeCols));
             }
+        }
 
-            // Spawning tiles
+        public void SpawnTiles()
+        {
             for (int row = 0; row < maxSizeRows; row++)
             {
                 for (int col = 0; col < maxSizeCols; col++)
