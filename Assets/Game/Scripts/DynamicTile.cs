@@ -34,11 +34,15 @@ namespace Blokoti.Game.Scripts
             if (_isSelected && Input.GetKeyDown(KeyCode.UpArrow))
             {
                 transform.localScale += new Vector3(0, 0.5F, 0);
+                transform.position += new Vector3(0, 0.25F, 0) ;
             }
             if (_isSelected && Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (transform.localScale.y > 0.5F)
+                {
                     transform.localScale -= new Vector3(0, 0.5F, 0);
+                    transform.position -= new Vector3(0, 0.25F, 0);
+                }
             }
         }
 
