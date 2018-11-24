@@ -1,4 +1,5 @@
-﻿using Blokoti.Game.Scripts.Managers;
+﻿using System;
+using Blokoti.Game.Scripts.Managers;
 using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Actors.Players
@@ -8,8 +9,8 @@ namespace Blokoti.Game.Scripts.Actors.Players
         public float stepSpeed = 0.04f;
 
         private TileManager _tileManager;
-        private PositionSupport _positionSupport;
         private GameManager _gameManager;
+        private PositionSupport _positionSupport;
 
         public Transform Transform
         {
@@ -59,15 +60,21 @@ namespace Blokoti.Game.Scripts.Actors.Players
             return _positionSupport.StepTowardsGoal();
         }
 
-        public Player()
-        {
-            _positionSupport = new PositionSupport(() => transform, () => stepSpeed);
-        }
-
-        private void Start()
+        private void Awake()
         {
             _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
+            if (_gameManager == null || _tileManager == null)
+            {
+                throw new Exception("Player couldn't initialize manager references");
+            }
+
+            _positionSupport = new PositionSupport(() => transform, () => stepSpeed, () => _tileManager, this);
+        }
+
+        public void Start()
+        {
+            _positionSupport.Start();
         }
 
         private void Update()
@@ -113,9 +120,9 @@ namespace Blokoti.Game.Scripts.Actors.Players
             if (move)
             {
                 // Handle wrong target and cancel the movement
-                if (_tileManager.GetTile(TargetRow, TargetCol) == null)
+                if (_tileManager.GetTile(targetRow, targetCol) == null)
                 {
-                    Debug.Log("Player's movement target to " + TargetRow + ":" + TargetCol + " unavailable");
+                    Debug.Log("Player's movement target to " + targetRow + ":" + targetRow + " unavailable");
                     return;
                 }
 

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using Blokoti.Game.Scripts.Managers;
+using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Actors
 {
@@ -6,6 +9,20 @@ namespace Blokoti.Game.Scripts.Actors
     {
         public List<GridPosition> walkingTemplate;
         public int walkingTemplateIndex;
+
+        private GameManager _gameManager;
+
+        public new void Awake()
+        {
+            base.Awake();
+            _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        }
+
+        public override void Start()
+        {
+            base.Start();
+            _gameManager.RegisterActor(this);
+        }
 
         public override void Act()
         {

@@ -1,3 +1,5 @@
+using System;
+using Blokoti.Game.Scripts.Managers;
 using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Actors
@@ -6,6 +8,7 @@ namespace Blokoti.Game.Scripts.Actors
     {
         public float stepSpeed;
 
+        protected TileManager TileManager { get; private set; }
         protected PositionSupport PositionSupport { get; private set; }
 
         public Transform Transform
@@ -58,11 +61,17 @@ namespace Blokoti.Game.Scripts.Actors
 
         public abstract void Act();
 
-        public bool Acting { get; protected set; }
-
-        protected AbstractActor()
+        public void Awake()
         {
-            PositionSupport = new PositionSupport(() => transform, () => stepSpeed);
+            TileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
+            PositionSupport = new PositionSupport(() => transform, () => stepSpeed, () => TileManager, this);
         }
+
+        public virtual void Start()
+        {
+            PositionSupport.Start();
+        }
+
+        public bool Acting { get; protected set; }
     }
 }

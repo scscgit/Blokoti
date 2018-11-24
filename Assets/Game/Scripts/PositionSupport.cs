@@ -1,4 +1,5 @@
 using System;
+using Blokoti.Game.Scripts.Managers;
 using UnityEngine;
 
 namespace Blokoti.Game.Scripts
@@ -13,11 +14,16 @@ namespace Blokoti.Game.Scripts
 
         private readonly Func<Transform> _getTransform;
         private readonly Func<float> _getStepSpeed;
+        private readonly Func<TileManager> _getTileManager;
+        private readonly Component _thisComponent;
 
-        public PositionSupport(Func<Transform> getTransform, Func<float> getStepSpeed)
+        public PositionSupport(Func<Transform> getTransform, Func<float> getStepSpeed, Func<TileManager> getTileManager,
+            Component thisComponent)
         {
             _getTransform = getTransform;
             _getStepSpeed = getStepSpeed;
+            _getTileManager = getTileManager;
+            _thisComponent = thisComponent;
         }
 
         public Transform Transform
@@ -68,7 +74,6 @@ namespace Blokoti.Game.Scripts
             TargetRow = row;
             TargetCol = col;
             Moving = true;
-
             Debug.Log(Transform.gameObject.name + " moving to " + TargetRow + ":" + TargetCol);
         }
 
@@ -95,6 +100,8 @@ namespace Blokoti.Game.Scripts
             Row = TargetRow;
             Col = TargetCol;
             Moving = false;
+            _getTileManager().UnregisterActor(_oldRow, _oldCol, _thisComponent);
+            _getTileManager().RegisterActor(Row, Col, _thisComponent);
             return true;
         }
 
@@ -110,6 +117,11 @@ namespace Blokoti.Game.Scripts
                 0,
                 _oldCol > TargetCol ? -StepSpeed : _oldCol < TargetCol ? StepSpeed : 0
             );
+        }
+
+        public virtual void Start()
+        {
+            _getTileManager().RegisterActor(Row, Col, _thisComponent);
         }
     }
 }

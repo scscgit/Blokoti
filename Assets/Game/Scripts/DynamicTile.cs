@@ -62,7 +62,7 @@ namespace Blokoti.Game.Scripts
 
         public DynamicTile()
         {
-            _positionSupport = new PositionSupport(() => transform, () => 0);
+            _positionSupport = new PositionSupport(() => transform, () => 0, () => _tileManager, this);
         }
 
         private void OnMouseEnter()
@@ -77,7 +77,7 @@ namespace Blokoti.Game.Scripts
             _isSelected = false;
         }
 
-        private void Start()
+        public void Start()
         {
             ApplyType(type);
             _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();

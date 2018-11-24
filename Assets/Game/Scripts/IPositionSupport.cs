@@ -15,5 +15,7 @@ namespace Blokoti.Game.Scripts
 
         void SetGoal(int row, int col);
         bool StepTowardsGoal();
+
+        void Start();
     }
 }

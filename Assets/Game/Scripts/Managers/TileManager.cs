@@ -16,21 +16,21 @@ namespace Blokoti.Game.Scripts.Managers
         public int maxSizeCols;
 
         private IList<IList<Component>> _availableTiles;
-        private IList<IList<IList<MonoBehaviour>>> _tileActors;
+        private IList<IList<IList<Component>>> _tileActors;
 
         private void Awake()
         {
             // Initializing lists of tile positions and their actors
             _availableTiles = new List<IList<Component>>(maxSizeRows);
-            _tileActors = new List<IList<IList<MonoBehaviour>>>(maxSizeRows);
+            _tileActors = new List<IList<IList<Component>>>(maxSizeRows);
             for (var row = 0; row < maxSizeRows; row++)
             {
                 _availableTiles.Add(new List<Component>(maxSizeCols));
-                _tileActors.Add(new List<IList<MonoBehaviour>>(maxSizeCols));
+                _tileActors.Add(new List<IList<Component>>(maxSizeCols));
                 for (var col = 0; col < maxSizeCols; col++)
                 {
                     _availableTiles[row].Add(null);
-                    _tileActors[row].Add(new List<MonoBehaviour>());
+                    _tileActors[row].Add(new List<Component>());
                 }
             }
         }
@@ -79,9 +79,29 @@ namespace Blokoti.Game.Scripts.Managers
             _availableTiles[row][column] = tile;
         }
 
-        public IList<MonoBehaviour> GetActors(int row, int column)
+        public IList<Component> GetActors(int row, int column)
         {
             return _tileActors[row][column];
+        }
+
+        public void UnregisterActor(int row, int col, Component actor)
+        {
+            for (var actorIndex = 0; actorIndex < _tileActors[row][col].Count; actorIndex++)
+            {
+                if (actor == _tileActors[row][col][actorIndex])
+                {
+                    _tileActors.RemoveAt(actorIndex);
+                    return;
+                }
+            }
+
+            // TODO: prevent
+            Debug.Log("ERROR: Attempted to unregister Actor " + actor.name + ", which wasn't registered");
+        }
+
+        public void RegisterActor(int row, int col, Component actor)
+        {
+            _tileActors[row][col].Add(actor);
         }
     }
 }
