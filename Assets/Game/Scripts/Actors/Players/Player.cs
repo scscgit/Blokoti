@@ -124,7 +124,7 @@ namespace Blokoti.Game.Scripts.Actors.Players
                 // Handle wrong target and cancel the movement
                 if (_tileManager.GetTile(targetRow, targetCol) == null || _tileManager.GetTile(targetRow, targetCol).transform.lossyScale.y>0.25f)
                 {
-                    Debug.Log("Player's movement target to " + TargetRow + ":" + TargetCol + " unavailable");
+                    Debug.Log("Player's movement target to " + targetRow + ":" + targetCol + " unavailable");
                     targetRow = lastTileRow;
                     targetCol = lastTileCol;
                     return;

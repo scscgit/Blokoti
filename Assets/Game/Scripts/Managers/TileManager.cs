@@ -90,7 +90,7 @@ namespace Blokoti.Game.Scripts.Managers
             {
                 if (actor == _tileActors[row][col][actorIndex])
                 {
-                    _tileActors.RemoveAt(actorIndex);
+                    _tileActors[row][col].RemoveAt(actorIndex);
                     return;
                 }
             }
