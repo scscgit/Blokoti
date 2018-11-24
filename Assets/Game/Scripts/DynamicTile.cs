@@ -4,9 +4,22 @@ namespace Blokoti.Game.Scripts
 {
     public class DynamicTile : MonoBehaviour
     {
+        public int Row
+        {
+            get { return Mathf.RoundToInt(transform.position.x + 4.5f); }
+            set { transform.position += new Vector3(value - 4.5f, 0, 0); }
+        }
+
+        public int Col
+        {
+            get { return Mathf.RoundToInt(transform.position.z + 4.5f); }
+            set { transform.position += new Vector3(0, 0, value - 4.5f); }
+        }
+
         public int type;
 
         private bool _isSelected;
+        private TileManager _tileManager;
 
         private void OnMouseEnter()
         {
@@ -23,6 +36,8 @@ namespace Blokoti.Game.Scripts
         private void Start()
         {
             ApplyType(type);
+            _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
+            _tileManager.SetAvailable(Row, Col, true);
         }
 
         private void Update()
@@ -31,11 +46,13 @@ namespace Blokoti.Game.Scripts
             {
                 ApplyType(type + 1);
             }
+
             if (_isSelected && Input.GetKeyDown(KeyCode.UpArrow))
             {
                 transform.localScale += new Vector3(0, 0.5F, 0);
-                transform.position += new Vector3(0, 0.25F, 0) ;
+                transform.position += new Vector3(0, 0.25F, 0);
             }
+
             if (_isSelected && Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (transform.localScale.y > 0.5F)

@@ -16,21 +16,23 @@ namespace Blokoti.Game.Scripts
         public int maxSizeCols;
 
         private IList<IList<bool>> _availableTiles;
-        private IList<IList<MonoBehaviour>> _tileActors;
+        private IList<IList<IList<MonoBehaviour>>> _tileActors;
 
-        private void Start()
+        private void Awake()
         {
             // Initializing lists of tile positions and their actors
+            const bool availableByDefault = false;
             _availableTiles = new List<IList<bool>>(maxSizeRows);
-            for (int row = 0; row < maxSizeRows; row++)
+            _tileActors = new List<IList<IList<MonoBehaviour>>>(maxSizeRows);
+            for (var row = 0; row < maxSizeRows; row++)
             {
                 _availableTiles.Add(new List<bool>(maxSizeCols));
-            }
-
-            _tileActors = new List<IList<MonoBehaviour>>(maxSizeRows);
-            for (int row = 0; row < maxSizeRows; row++)
-            {
-                _tileActors.Add(new List<MonoBehaviour>(maxSizeCols));
+                _tileActors.Add(new List<IList<MonoBehaviour>>(maxSizeCols));
+                for (var col = 0; col < maxSizeCols; col++)
+                {
+                    _availableTiles[row].Add(availableByDefault);
+                    _tileActors[row].Add(new List<MonoBehaviour>());
+                }
             }
         }
 
@@ -56,6 +58,7 @@ namespace Blokoti.Game.Scripts
                 }
             }
 
+            // The original tile gets destroyed, as it was replaced by tile [0:0].
             GameObject.Destroy(firstTile.gameObject);
         }
 
@@ -65,13 +68,19 @@ namespace Blokoti.Game.Scripts
             {
                 return _availableTiles[row][column];
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return false;
             }
         }
 
-        public bool GetActors(int row, int column)
+        public void SetAvailable(int row, int column, bool value)
+        {
+            Debug.Log("Set available tile " + row + ":" + column);
+            _availableTiles[row][column] = value;
+        }
+
+        public IList<MonoBehaviour> GetActors(int row, int column)
         {
             return _tileActors[row][column];
         }
