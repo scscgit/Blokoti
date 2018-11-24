@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Blokoti.Game.Scripts
+namespace Blokoti.Game.Scripts.Managers
 {
     public class TileManager : MonoBehaviour
     {
@@ -15,22 +15,21 @@ namespace Blokoti.Game.Scripts
         public int maxSizeRows;
         public int maxSizeCols;
 
-        private IList<IList<bool>> _availableTiles;
+        private IList<IList<Component>> _availableTiles;
         private IList<IList<IList<MonoBehaviour>>> _tileActors;
 
         private void Awake()
         {
             // Initializing lists of tile positions and their actors
-            const bool availableByDefault = false;
-            _availableTiles = new List<IList<bool>>(maxSizeRows);
+            _availableTiles = new List<IList<Component>>(maxSizeRows);
             _tileActors = new List<IList<IList<MonoBehaviour>>>(maxSizeRows);
             for (var row = 0; row < maxSizeRows; row++)
             {
-                _availableTiles.Add(new List<bool>(maxSizeCols));
+                _availableTiles.Add(new List<Component>(maxSizeCols));
                 _tileActors.Add(new List<IList<MonoBehaviour>>(maxSizeCols));
                 for (var col = 0; col < maxSizeCols; col++)
                 {
-                    _availableTiles[row].Add(availableByDefault);
+                    _availableTiles[row].Add(null);
                     _tileActors[row].Add(new List<MonoBehaviour>());
                 }
             }
@@ -62,7 +61,7 @@ namespace Blokoti.Game.Scripts
             GameObject.Destroy(firstTile.gameObject);
         }
 
-        public bool IsAvailable(int row, int column)
+        public Component GetTile(int row, int column)
         {
             try
             {
@@ -70,14 +69,14 @@ namespace Blokoti.Game.Scripts
             }
             catch (ArgumentOutOfRangeException)
             {
-                return false;
+                return null;
             }
         }
 
-        public void SetAvailable(int row, int column, bool value)
+        public void RegisterTile(int row, int column, Component tile)
         {
-            Debug.Log("Set available tile " + row + ":" + column);
-            _availableTiles[row][column] = value;
+            Debug.Log("Registering tile " + row + ":" + column);
+            _availableTiles[row][column] = tile;
         }
 
         public IList<MonoBehaviour> GetActors(int row, int column)

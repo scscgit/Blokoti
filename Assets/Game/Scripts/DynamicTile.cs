@@ -1,25 +1,69 @@
-﻿using UnityEngine;
+﻿using Blokoti.Game.Scripts.Managers;
+using UnityEngine;
 
 namespace Blokoti.Game.Scripts
 {
-    public class DynamicTile : MonoBehaviour
+    public class DynamicTile : MonoBehaviour, IPositionSupport
     {
-        public int Row
-        {
-            get { return Mathf.RoundToInt(transform.position.x + 4.5f); }
-            set { transform.position += new Vector3(value - 4.5f, 0, 0); }
-        }
-
-        public int Col
-        {
-            get { return Mathf.RoundToInt(transform.position.z + 4.5f); }
-            set { transform.position += new Vector3(0, 0, value - 4.5f); }
-        }
-
         public int type;
 
         private bool _isSelected;
         private TileManager _tileManager;
+
+        private readonly PositionSupport _positionSupport;
+
+        public Transform Transform
+        {
+            get { return _positionSupport.Transform; }
+        }
+
+        public float StepSpeed
+        {
+            get { return _positionSupport.StepSpeed; }
+        }
+
+        public int Row
+        {
+            get { return _positionSupport.Row; }
+            set { _positionSupport.Row = value; }
+        }
+
+        public int Col
+        {
+            get { return _positionSupport.Col; }
+            set { _positionSupport.Col = value; }
+        }
+
+
+        public bool Moving
+        {
+            get { return _positionSupport.Moving; }
+        }
+
+        public int TargetRow
+        {
+            get { return _positionSupport.TargetRow; }
+        }
+
+        public int TargetCol
+        {
+            get { return _positionSupport.TargetCol; }
+        }
+
+        public void SetGoal(int row, int col)
+        {
+            _positionSupport.SetGoal(row, col);
+        }
+
+        public bool StepTowardsGoal()
+        {
+            return _positionSupport.StepTowardsGoal();
+        }
+
+        public DynamicTile()
+        {
+            _positionSupport = new PositionSupport(() => transform, () => 0);
+        }
 
         private void OnMouseEnter()
         {
@@ -37,7 +81,7 @@ namespace Blokoti.Game.Scripts
         {
             ApplyType(type);
             _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
-            _tileManager.SetAvailable(Row, Col, true);
+            _tileManager.RegisterTile(Row, Col, this);
         }
 
         private void Update()
@@ -46,13 +90,15 @@ namespace Blokoti.Game.Scripts
             {
                 ApplyType(type + 1);
             }
-            if (transform.Find("Grey").gameObject.active.Equals(true))
+
+            if (transform.Find("Grey").gameObject.activeInHierarchy.Equals(true))
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     transform.localScale += new Vector3(0, 0.5F, 0);
                     transform.position += new Vector3(0, 0.25F, 0);
                 }
+
                 if (Input.GetKeyDown(KeyCode.DownArrow))
                 {
                     if (transform.localScale.y > 0.5F)
@@ -80,13 +126,11 @@ namespace Blokoti.Game.Scripts
                     transform.Find("Grey").gameObject.SetActive(false);
                     break;
                 case 1:
-                    // todo
                     transform.Find("Green").gameObject.SetActive(false);
                     transform.Find("White").gameObject.SetActive(true);
                     transform.Find("Grey").gameObject.SetActive(false);
                     break;
                 case 2:
-                    // todo
                     transform.Find("Green").gameObject.SetActive(false);
                     transform.Find("White").gameObject.SetActive(false);
                     transform.Find("Grey").gameObject.SetActive(true);
