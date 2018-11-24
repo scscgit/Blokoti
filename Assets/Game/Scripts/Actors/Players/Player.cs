@@ -1,7 +1,7 @@
 ﻿using Blokoti.Game.Scripts.Managers;
 using UnityEngine;
 
-namespace Blokoti.Game.Scripts.Actors
+namespace Blokoti.Game.Scripts.Actors.Players
 {
     public class Player : MonoBehaviour, IPositionSupport
     {
@@ -9,6 +9,7 @@ namespace Blokoti.Game.Scripts.Actors
 
         private TileManager _tileManager;
         private PositionSupport _positionSupport;
+        private GameManager _gameManager;
 
         public Transform Transform
         {
@@ -40,11 +41,7 @@ namespace Blokoti.Game.Scripts.Actors
 
         public int TargetRow
         {
-            get
-            {
-                return _positionSupport.TargetRow;
-                ;
-            }
+            get { return _positionSupport.TargetRow; }
         }
 
         public int TargetCol
@@ -62,10 +59,15 @@ namespace Blokoti.Game.Scripts.Actors
             return _positionSupport.StepTowardsGoal();
         }
 
+        public Player()
+        {
+            _positionSupport = new PositionSupport(() => transform, () => stepSpeed);
+        }
+
         private void Start()
         {
+            _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
-            _positionSupport = new PositionSupport(() => transform, () => stepSpeed);
         }
 
         private void Update()
@@ -77,7 +79,7 @@ namespace Blokoti.Game.Scripts.Actors
         private void ProcessInputPrepareTarget()
         {
             // Cannot start a next movement if still moving
-            if (Moving)
+            if (Moving || _gameManager.Acting)
             {
                 return;
             }
@@ -119,6 +121,8 @@ namespace Blokoti.Game.Scripts.Actors
 
                 // Start the movement
                 _positionSupport.SetGoal(targetRow, targetCol);
+                // Start a next acting round
+                _gameManager.ActActors();
             }
         }
     }

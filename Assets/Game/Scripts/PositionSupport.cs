@@ -6,7 +6,7 @@ namespace Blokoti.Game.Scripts
     public class PositionSupport : IPositionSupport
     {
         public const float GridOffsetX = 4.5f;
-        public const float GridOffsetY = 4.5f;
+        public const float GridOffsetZ = 4.5f;
 
         private int _oldRow;
         private int _oldCol;
@@ -42,11 +42,11 @@ namespace Blokoti.Game.Scripts
 
         public int Col
         {
-            get { return Mathf.RoundToInt(_getTransform().position.z + GridOffsetY); }
+            get { return Mathf.RoundToInt(_getTransform().position.z + GridOffsetZ); }
             set
             {
                 var position = Transform.position;
-                Transform.position = new Vector3(position.x, position.y, value - GridOffsetY);
+                Transform.position = new Vector3(position.x, position.y, value - GridOffsetZ);
             }
         }
 
@@ -85,8 +85,8 @@ namespace Blokoti.Game.Scripts
             }
 
             InterpolateMovement();
-            if (!AlmostEquals(Transform.position.x + 4.5f, TargetRow) ||
-                !AlmostEquals(Transform.position.z + 4.5f, TargetCol))
+            if (!AlmostEquals(Transform.position.x + GridOffsetX, TargetRow) ||
+                !AlmostEquals(Transform.position.z + GridOffsetZ, TargetCol))
             {
                 return false;
             }
@@ -100,7 +100,7 @@ namespace Blokoti.Game.Scripts
 
         private bool AlmostEquals(float a, float b)
         {
-            return Mathf.Abs(a - b) < StepSpeed * 2;
+            return Mathf.Abs(a - b) < StepSpeed * 1.5f;
         }
 
         private void InterpolateMovement()
