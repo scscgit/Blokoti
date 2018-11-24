@@ -9,6 +9,13 @@
 /.idea/
 /*.sln.DotSettings
 
+# Ignore generated Rider plugin
+Assets\Plugins\Editor\JetBrains\JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll
+Assets\Plugins\Editor\JetBrains\JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta
+
+# Project version should allow a minor version difference within our team
+ProjectSettings\ProjectVersion.txt
+
 #####
 # Default .gitignore for Unity follows
 #####
