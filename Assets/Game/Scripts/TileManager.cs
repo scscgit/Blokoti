@@ -7,6 +7,7 @@ namespace Blokoti.Game.Scripts
     public class TileManager : MonoBehaviour
     {
         public GameObject firstTile;
+        public GameObject parent;
 
         public int tileWidth;
         public int tileHeight;
@@ -39,17 +40,21 @@ namespace Blokoti.Game.Scripts
                 {
                     var firstPosition = firstTile.transform.transform.position;
 
-                    GameObject.Instantiate(
+                    var tile = GameObject.Instantiate(
                         firstTile,
                         new Vector3(
                             firstPosition.x + row * tileWidth,
                             firstPosition.y,
                             firstPosition.z + col * tileHeight
                         ),
-                        Quaternion.identity
+                        Quaternion.identity,
+                        parent.transform
                     );
+                    tile.name = "Tile " + row + " " + col;
                 }
             }
+
+            GameObject.Destroy(firstTile.gameObject);
         }
 
         public bool IsAvailable(int row, int column)
