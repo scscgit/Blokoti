@@ -1,69 +1,13 @@
-﻿using Blokoti.Game.Scripts.Managers;
+﻿using Blokoti.Game.Scripts.Actors.Players;
 using UnityEngine;
 
-namespace Blokoti.Game.Scripts
+namespace Blokoti.Game.Scripts.Tiles
 {
-    public class DynamicTile : MonoBehaviour, IPositionSupport
+    public class DynamicTile : AbstractTile
     {
         public int type;
 
         private bool _isSelected;
-        private TileManager _tileManager;
-
-        private readonly PositionSupport _positionSupport;
-
-        public Transform Transform
-        {
-            get { return _positionSupport.Transform; }
-        }
-
-        public float StepSpeed
-        {
-            get { return _positionSupport.StepSpeed; }
-        }
-
-        public int Row
-        {
-            get { return _positionSupport.Row; }
-            set { _positionSupport.Row = value; }
-        }
-
-        public int Col
-        {
-            get { return _positionSupport.Col; }
-            set { _positionSupport.Col = value; }
-        }
-
-
-        public bool Moving
-        {
-            get { return _positionSupport.Moving; }
-        }
-
-        public int TargetRow
-        {
-            get { return _positionSupport.TargetRow; }
-        }
-
-        public int TargetCol
-        {
-            get { return _positionSupport.TargetCol; }
-        }
-
-        public void SetGoal(int row, int col)
-        {
-            _positionSupport.SetGoal(row, col);
-        }
-
-        public bool StepTowardsGoal()
-        {
-            return _positionSupport.StepTowardsGoal();
-        }
-
-        public DynamicTile()
-        {
-            _positionSupport = new PositionSupport(() => transform, () => 0, () => _tileManager, this);
-        }
 
         private void OnMouseEnter()
         {
@@ -77,11 +21,18 @@ namespace Blokoti.Game.Scripts
             _isSelected = false;
         }
 
-        public void Start()
+        public override void Start()
         {
+            base.Start();
             ApplyType(type);
-            _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
-            _tileManager.RegisterTile(Row, Col, this);
+        }
+
+        public override void OnPlayerEnter(Player player)
+        {
+        }
+
+        public override void OnPlayerExit(Player player)
+        {
         }
 
         private void Update()

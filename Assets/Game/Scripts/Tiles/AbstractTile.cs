@@ -1,12 +1,11 @@
+using Blokoti.Game.Scripts.Actors.Players;
 using Blokoti.Game.Scripts.Managers;
 using UnityEngine;
 
-namespace Blokoti.Game.Scripts.Actors
+namespace Blokoti.Game.Scripts.Tiles
 {
-    public abstract class AbstractActor : MonoBehaviour, IActor, IPositionSupport
+    public abstract class AbstractTile : MonoBehaviour, IPositionSupport, ITile
     {
-        public float stepSpeed;
-
         protected TileManager TileManager { get; private set; }
         protected PositionSupport PositionSupport { get; private set; }
 
@@ -58,19 +57,30 @@ namespace Blokoti.Game.Scripts.Actors
             return PositionSupport.StepTowardsGoal();
         }
 
-        public abstract void Act();
-
         public void OnEnable()
         {
+            PositionSupport = new PositionSupport(() => transform, () => 0, () => TileManager, this);
             TileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
-            PositionSupport = new PositionSupport(() => transform, () => stepSpeed, () => TileManager, this);
         }
 
         public virtual void Start()
         {
-            PositionSupport.Start();
+            TileManager.RegisterTile(Row, Col, this);
         }
 
-        public bool Acting { get; protected set; }
+        public Component Component
+        {
+            get { return this; }
+        }
+
+        public void Destroy()
+        {
+            TileManager.UnregisterTile(Row, Col);
+            GameObject.Destroy(gameObject);
+        }
+
+        public abstract void OnPlayerEnter(Player player);
+
+        public abstract void OnPlayerExit(Player player);
     }
 }

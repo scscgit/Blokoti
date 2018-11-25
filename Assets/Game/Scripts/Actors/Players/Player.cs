@@ -60,7 +60,7 @@ namespace Blokoti.Game.Scripts.Actors.Players
             return _positionSupport.StepTowardsGoal();
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
             _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
@@ -122,7 +122,8 @@ namespace Blokoti.Game.Scripts.Actors.Players
             if (move)
             {
                 // Handle wrong target and cancel the movement
-                if (_tileManager.GetTile(targetRow, targetCol) == null || _tileManager.GetTile(targetRow, targetCol).transform.lossyScale.y>0.25f)
+                if (_tileManager.GetTile(targetRow, targetCol) == null ||
+                    _tileManager.GetTile(targetRow, targetCol).Component.transform.lossyScale.y > 0.25f)
                 {
                     Debug.Log("Player's movement target to " + targetRow + ":" + targetCol + " unavailable");
                     targetRow = lastTileRow;

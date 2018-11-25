@@ -11,9 +11,9 @@ namespace Blokoti.Game.Scripts.Actors
 
         private GameManager _gameManager;
 
-        public new void Awake()
+        public new void OnEnable()
         {
-            base.Awake();
+            base.OnEnable();
             _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         }
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Blokoti.Game.Scripts.Actors.Players;
+using Blokoti.Game.Scripts.Tiles;
 using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Managers
@@ -12,20 +14,20 @@ namespace Blokoti.Game.Scripts.Managers
         public int tileWidth;
         public int tileHeight;
 
-        public int maxSizeRows;
+        [Header("Edit before running game")] public int maxSizeRows;
         public int maxSizeCols;
 
-        private IList<IList<Component>> _availableTiles;
+        private IList<IList<ITile>> _availableTiles;
         private IList<IList<IList<Component>>> _tileActors;
 
         private void Awake()
         {
             // Initializing lists of tile positions and their actors
-            _availableTiles = new List<IList<Component>>(maxSizeRows);
+            _availableTiles = new List<IList<ITile>>(maxSizeRows);
             _tileActors = new List<IList<IList<Component>>>(maxSizeRows);
             for (var row = 0; row < maxSizeRows; row++)
             {
-                _availableTiles.Add(new List<Component>(maxSizeCols));
+                _availableTiles.Add(new List<ITile>(maxSizeCols));
                 _tileActors.Add(new List<IList<Component>>(maxSizeCols));
                 for (var col = 0; col < maxSizeCols; col++)
                 {
@@ -58,10 +60,10 @@ namespace Blokoti.Game.Scripts.Managers
             }
 
             // The original tile gets destroyed, as it was replaced by tile [0:0].
-            GameObject.Destroy(firstTile.gameObject);
+            firstTile.GetComponent<ITile>().Destroy();
         }
 
-        public Component GetTile(int row, int column)
+        public ITile GetTile(int row, int column)
         {
             try
             {
@@ -73,10 +75,16 @@ namespace Blokoti.Game.Scripts.Managers
             }
         }
 
-        public void RegisterTile(int row, int column, Component tile)
+        public void RegisterTile(int row, int column, ITile tile)
         {
             Debug.Log("Registering tile " + row + ":" + column);
             _availableTiles[row][column] = tile;
+        }
+
+        public void UnregisterTile(int row, int column)
+        {
+            Debug.Log("Unregistering tile " + row + ":" + column);
+            _availableTiles[row][column] = null;
         }
 
         public IList<Component> GetActors(int row, int column)
@@ -86,6 +94,16 @@ namespace Blokoti.Game.Scripts.Managers
 
         public void UnregisterActor(int row, int col, Component actor)
         {
+            var player = actor as Player;
+            if (player != null)
+            {
+                var tile = GetTile(row, col);
+                if (tile != null)
+                {
+                    tile.OnPlayerExit(player);
+                }
+            }
+
             for (var actorIndex = 0; actorIndex < _tileActors[row][col].Count; actorIndex++)
             {
                 if (actor == _tileActors[row][col][actorIndex])
@@ -95,13 +113,22 @@ namespace Blokoti.Game.Scripts.Managers
                 }
             }
 
-            // TODO: prevent
-            Debug.Log("ERROR: Attempted to unregister Actor " + actor.name + ", which wasn't registered");
+            throw new Exception("ERROR: Attempted to unregister Actor " + actor.name + ", which wasn't registered");
         }
 
         public void RegisterActor(int row, int col, Component actor)
         {
             _tileActors[row][col].Add(actor);
+
+            var player = actor as Player;
+            if (player != null)
+            {
+                var tile = GetTile(row, col);
+                if (tile != null)
+                {
+                    tile.OnPlayerEnter(player);
+                }
+            }
         }
     }
 }
