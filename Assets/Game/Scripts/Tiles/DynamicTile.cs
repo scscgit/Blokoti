@@ -71,8 +71,23 @@ namespace Blokoti.Game.Scripts.Tiles
             switch (transformType)
             {
                 case 0:
+                    transform.Find("Green").gameObject.SetActive(false);
+                    transform.Find("White").gameObject.SetActive(false);
+                    transform.Find("Grey").gameObject.SetActive(false);
+                    transform.Find("Broken").gameObject.SetActive(true);
                     Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(OneWalkTile).Name);
                     gameObject.AddComponent<OneWalkTile>();
+                    Destroy(this);
+                    break;
+                case 1:
+                    transform.Find("Green").gameObject.SetActive(false);
+                    transform.Find("White").gameObject.SetActive(false);
+                    transform.Find("Grey").gameObject.SetActive(true);
+                    transform.Find("Broken").gameObject.SetActive(false);
+                    Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(SwitchTile).Name);
+                    var switchTile = gameObject.AddComponent<SwitchTile>();
+                    var clips = switchTile.GetComponent<Animator>().runtimeAnimatorController.animationClips;
+                    // TODO: clips
                     Destroy(this);
                     break;
             }
@@ -80,7 +95,7 @@ namespace Blokoti.Game.Scripts.Tiles
 
         private void ApplyType(int newType)
         {
-            if (newType > 2)
+            if (newType >= 2)
             {
                 newType = 0;
             }
@@ -91,17 +106,10 @@ namespace Blokoti.Game.Scripts.Tiles
                 case 0:
                     transform.Find("Green").gameObject.SetActive(true);
                     transform.Find("White").gameObject.SetActive(false);
-                    transform.Find("Grey").gameObject.SetActive(false);
                     break;
                 case 1:
                     transform.Find("Green").gameObject.SetActive(false);
                     transform.Find("White").gameObject.SetActive(true);
-                    transform.Find("Grey").gameObject.SetActive(false);
-                    break;
-                case 2:
-                    transform.Find("Green").gameObject.SetActive(false);
-                    transform.Find("White").gameObject.SetActive(false);
-                    transform.Find("Grey").gameObject.SetActive(true);
                     break;
             }
         }
