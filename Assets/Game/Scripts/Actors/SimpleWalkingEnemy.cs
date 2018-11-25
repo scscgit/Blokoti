@@ -47,7 +47,7 @@ namespace Blokoti.Game.Scripts.Actors
                     {
                         if (TileManager.GetTile(Row, col) == null)
                         {
-                            Moving = false;
+                            SetGoal(walkingGoal.Row, col + 1);
                             _end = true;
                             return;
                         }
@@ -61,7 +61,7 @@ namespace Blokoti.Game.Scripts.Actors
                     {
                         if (TileManager.GetTile(Row, col) == null)
                         {
-                            Moving = false;
+                            SetGoal(walkingGoal.Row, col - 1);
                             _end = true;
                             return;
                         }
@@ -77,7 +77,7 @@ namespace Blokoti.Game.Scripts.Actors
                     {
                         if (TileManager.GetTile(row, Col) == null)
                         {
-                            Moving = false;
+                            SetGoal(row + 1, walkingGoal.Column);
                             _end = true;
                             return;
                         }
@@ -91,7 +91,7 @@ namespace Blokoti.Game.Scripts.Actors
                     {
                         if (TileManager.GetTile(row, Col) == null)
                         {
-                            Moving = false;
+                            SetGoal(row - 1, walkingGoal.Column);
                             _end = true;
                             return;
                         }
