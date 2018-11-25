@@ -6,9 +6,12 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: Material
+    2100002: tile_base
+    2100004: tile_glow
     2300000: //RootNode
     3300000: //RootNode
     4300000: Cube
+    4300002: Cube_022
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
@@ -84,7 +87,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
