@@ -4,77 +4,27 @@ using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Actors.Players
 {
-    public class Player : MonoBehaviour, IPositionSupport
+    public class Player : AbstractActor
     {
-        public float stepSpeed = 0.04f;
+        public Player()
+        {
+            stepSpeed = 0.04f;
+        }
 
-        private TileManager _tileManager;
         private GameManager _gameManager;
-        private PositionSupport _positionSupport;
 
-        public Transform Transform
+        public override void Act()
         {
-            get { return _positionSupport.Transform; }
         }
 
-        public float StepSpeed
+        private new void OnEnable()
         {
-            get { return _positionSupport.StepSpeed; }
-        }
-
-        public int Row
-        {
-            get { return _positionSupport.Row; }
-            set { _positionSupport.Row = value; }
-        }
-
-        public int Col
-        {
-            get { return _positionSupport.Col; }
-            set { _positionSupport.Col = value; }
-        }
-
-
-        public bool Moving
-        {
-            get { return _positionSupport.Moving; }
-        }
-
-        public int TargetRow
-        {
-            get { return _positionSupport.TargetRow; }
-        }
-
-        public int TargetCol
-        {
-            get { return _positionSupport.TargetCol; }
-        }
-
-        public void SetGoal(int row, int col)
-        {
-            _positionSupport.SetGoal(row, col);
-        }
-
-        public bool StepTowardsGoal()
-        {
-            return _positionSupport.StepTowardsGoal();
-        }
-
-        private void OnEnable()
-        {
+            base.OnEnable();
             _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
-            if (_gameManager == null || _tileManager == null)
+            if (_gameManager == null)
             {
                 throw new Exception("Player couldn't initialize manager references");
             }
-
-            _positionSupport = new PositionSupport(() => transform, () => stepSpeed, () => _tileManager, this);
-        }
-
-        public void Start()
-        {
-            _positionSupport.Start();
         }
 
         private void Update()
@@ -96,8 +46,6 @@ namespace Blokoti.Game.Scripts.Actors.Players
             var targetRow = Row;
             var targetCol = Col;
             var move = false;
-            var lastTileRow = targetRow;
-            var lastTileCol = targetCol;
             if (horizontal < 0)
             {
                 targetRow--;
@@ -122,20 +70,24 @@ namespace Blokoti.Game.Scripts.Actors.Players
             if (move)
             {
                 // Handle wrong target and cancel the movement
-                if (_tileManager.GetTile(targetRow, targetCol) == null ||
-                    _tileManager.GetTile(targetRow, targetCol).Component.transform.lossyScale.y > 0.25f)
+                if (TileManager.GetTile(targetRow, targetCol) == null ||
+                    TileManager.GetTile(targetRow, targetCol).Component.transform.lossyScale.y > 0.25f)
                 {
                     Debug.Log("Player's movement target to " + targetRow + ":" + targetCol + " unavailable");
-                    targetRow = lastTileRow;
-                    targetCol = lastTileCol;
                     return;
                 }
 
                 // Start the movement
-                _positionSupport.SetGoal(targetRow, targetCol);
+                PositionSupport.SetGoal(targetRow, targetCol);
                 // Start a next acting round
                 _gameManager.ActActors();
             }
+        }
+
+        public void OnCollideActor(Component actor)
+        {
+            // Game Over
+            Destroy(gameObject);
         }
     }
 }

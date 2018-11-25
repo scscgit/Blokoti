@@ -11,6 +11,8 @@ namespace Blokoti.Game.Scripts
 
         private int _oldRow;
         private int _oldCol;
+        private int _intermediateRow;
+        private int _intermediateCol;
 
         private readonly Func<Transform> _getTransform;
         private readonly Func<float> _getStepSpeed;
@@ -71,10 +73,12 @@ namespace Blokoti.Game.Scripts
 
             _oldRow = Row;
             _oldCol = Col;
+            _intermediateRow = Row;
+            _intermediateCol = Col;
             TargetRow = row;
             TargetCol = col;
             Moving = true;
-            Debug.Log(Transform.gameObject.name + " moving to " + TargetRow + ":" + TargetCol);
+            Debug.Log(Transform.gameObject.name + " moving to target " + TargetRow + ":" + TargetCol);
         }
 
         /// <summary>
@@ -90,9 +94,22 @@ namespace Blokoti.Game.Scripts
             }
 
             InterpolateMovement();
+            // In the case of a long jump we can still notify TileManager about Row/Col change
+            if (_intermediateRow != Row || _intermediateCol != Col)
+            {
+                Debug.Log(_thisComponent.gameObject.name
+                          + " has moved from " + _intermediateRow + ":" + _intermediateCol
+                          + " to " + Row + ":" + Col);
+                _getTileManager().UnregisterActor(_intermediateRow, _intermediateCol, _thisComponent);
+                _getTileManager().RegisterActor(Row, Col, _thisComponent);
+                _intermediateRow = Row;
+                _intermediateCol = Col;
+            }
+
             if (!AlmostEquals(Transform.position.x + GridOffsetX, TargetRow) ||
                 !AlmostEquals(Transform.position.z + GridOffsetZ, TargetCol))
             {
+                // Walk is still not finished
                 return false;
             }
 
@@ -100,8 +117,7 @@ namespace Blokoti.Game.Scripts
             Row = TargetRow;
             Col = TargetCol;
             Moving = false;
-            _getTileManager().UnregisterActor(_oldRow, _oldCol, _thisComponent);
-            _getTileManager().RegisterActor(Row, Col, _thisComponent);
+
             return true;
         }
 

@@ -37,6 +37,9 @@ namespace Blokoti.Game.Scripts.Managers
             }
         }
 
+        /// <summary>
+        /// Can be activated with a button from the Editor.
+        /// </summary>
         public void SpawnTiles()
         {
             for (int row = 0; row < maxSizeRows; row++)
@@ -55,7 +58,7 @@ namespace Blokoti.Game.Scripts.Managers
                         Quaternion.identity,
                         parent.transform
                     );
-                    tile.name = "Tile " + row + " " + col;
+                    tile.name = firstTile.name + " " + row + " " + col;
                 }
             }
 
@@ -118,7 +121,8 @@ namespace Blokoti.Game.Scripts.Managers
 
         public void RegisterActor(int row, int col, Component actor)
         {
-            _tileActors[row][col].Add(actor);
+            var onTile = _tileActors[row][col];
+            onTile.Add(actor);
 
             var player = actor as Player;
             if (player != null)
@@ -127,6 +131,18 @@ namespace Blokoti.Game.Scripts.Managers
                 if (tile != null)
                 {
                     tile.OnPlayerEnter(player);
+                }
+            }
+            else
+            {
+                // Someone other than Player, check if the actor collided with him
+                foreach (var otherActorOnTile in onTile)
+                {
+                    var otherPlayerActor = otherActorOnTile as Player;
+                    if (otherPlayerActor != null)
+                    {
+                        otherPlayerActor.OnCollideActor(actor);
+                    }
                 }
             }
         }
