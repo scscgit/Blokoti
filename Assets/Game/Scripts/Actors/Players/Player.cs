@@ -96,8 +96,16 @@ namespace Blokoti.Game.Scripts.Actors.Players
 
         public void OnCollideActor(Component actor)
         {
-            // Game Over
-            Destroy(gameObject);
+            if (actor is Elevator)
+            {
+                transform.parent = actor.transform;
+                ((Elevator) actor).Launch();
+            }
+            else
+            {
+                // Game Over
+                Destroy(gameObject);
+            }
         }
     }
 }
