@@ -1,19 +1,23 @@
 ﻿using Blokoti.Game.Scripts.Actors.Players;
-using Blokoti.Game.Scripts.Tiles;
+using UnityEngine;
 using UnityEngine.Events;
 
-public class SwitchTile : AbstractTile
+namespace Blokoti.Game.Scripts.Tiles
 {
-    public UnityEvent Enter;
-    public UnityEvent Exit;
-
-    public override void OnPlayerEnter(Player player)
+    [SelectionBase]
+    public class SwitchTile : AbstractTile
     {
-        Enter.Invoke();
-    }
+        public UnityEvent enter;
+        public UnityEvent exit;
 
-    public override void OnPlayerExit(Player player)
-    {
-        Exit.Invoke();
+        public override void OnPlayerEnter(Player player)
+        {
+            enter.Invoke();
+        }
+
+        public override void OnPlayerExit(Player player)
+        {
+            exit.Invoke();
+        }
     }
 }

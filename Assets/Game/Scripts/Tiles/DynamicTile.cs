@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Tiles
 {
+    [SelectionBase]
     public class DynamicTile : AbstractTile
     {
         public int type;

@@ -58,7 +58,7 @@ namespace Blokoti.Game.Scripts
             }
         }
 
-        public bool Moving { get; private set; }
+        public bool Moving { get; set; }
 
         public int TargetRow { get; private set; }
 

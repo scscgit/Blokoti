@@ -1,7 +1,9 @@
 using Blokoti.Game.Scripts.Actors.Players;
+using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Tiles
 {
+    [SelectionBase]
     public class OneWalkTile : AbstractTile
     {
         private bool _stepped;

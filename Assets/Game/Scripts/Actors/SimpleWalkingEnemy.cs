@@ -32,6 +32,59 @@ namespace Blokoti.Game.Scripts.Actors
                 walkingTemplateIndex = 0;
             }
 
+            if (walkingGoal.Row == Row)
+            {
+                if (walkingGoal.Column < Col)
+                {
+                    for (var col = Col - 1; col >= walkingGoal.Column; col--)
+                    {
+                        if (TileManager.GetTile(Row, col) == null)
+                        {
+                            Moving = false;
+                            return;
+                        }
+                    }
+                }
+
+                if (walkingGoal.Column > Col)
+                {
+                    for (var col = Col + 1; col <= walkingGoal.Column; col++)
+                    {
+                        if (TileManager.GetTile(Row, col) == null)
+                        {
+                            Moving = false;
+                            return;
+                        }
+                    }
+                }
+            }
+            else if (walkingGoal.Column == Col)
+            {
+                if (walkingGoal.Row < Row)
+                {
+                    for (var row = Row - 1; row >= walkingGoal.Row; row--)
+                    {
+                        if (TileManager.GetTile(row, Col) == null)
+                        {
+                            Moving = false;
+                            return;
+                        }
+                    }
+                }
+
+                if (walkingGoal.Row > Row)
+                {
+                    for (var row = Row + 1; row <= walkingGoal.Row; row++)
+                    {
+                        if (TileManager.GetTile(row, Col) == null)
+                        {
+                            Moving = false;
+                            return;
+                        }
+                    }
+                }
+            }
+
             SetGoal(walkingGoal.Row, walkingGoal.Column);
         }
 

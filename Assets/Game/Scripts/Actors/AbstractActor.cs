@@ -36,6 +36,7 @@ namespace Blokoti.Game.Scripts.Actors
         public bool Moving
         {
             get { return PositionSupport.Moving; }
+            set { PositionSupport.Moving = value; }
         }
 
         public int TargetRow
