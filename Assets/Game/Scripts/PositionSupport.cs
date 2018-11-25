@@ -64,6 +64,8 @@ namespace Blokoti.Game.Scripts
 
         public int TargetCol { get; private set; }
 
+        public Func<bool> OnGoalFinish { get; set; }
+
         public void SetGoal(int row, int col)
         {
             if (Moving)
@@ -117,6 +119,12 @@ namespace Blokoti.Game.Scripts
             Row = TargetRow;
             Col = TargetCol;
             Moving = false;
+
+            if (OnGoalFinish != null)
+            {
+                OnGoalFinish();
+                OnGoalFinish = null;
+            }
 
             return true;
         }

@@ -84,8 +84,13 @@ namespace Blokoti.Game.Scripts.Actors.Players
 
                 // Start the movement
                 PositionSupport.SetGoal(targetRow, targetCol);
-                // Start a next acting round
-                _gameManager.ActActors();
+
+                PositionSupport.OnGoalFinish += () =>
+                {
+                    // Start a next acting round
+                    _gameManager.ActActors();
+                    return true;
+                };
             }
         }
 
