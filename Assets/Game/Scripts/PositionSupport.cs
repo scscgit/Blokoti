@@ -106,8 +106,8 @@ namespace Blokoti.Game.Scripts
                 _intermediateCol = Col;
             }
 
-            if (!AlmostEquals(Transform.position.x + GridOffsetX, TargetRow) ||
-                !AlmostEquals(Transform.position.z + GridOffsetZ, TargetCol))
+            if (_oldRow != TargetRow && !AlmostEquals(Transform.position.x + GridOffsetX, TargetRow) ||
+                _oldCol != TargetCol && !AlmostEquals(Transform.position.z + GridOffsetZ, TargetCol))
             {
                 // Walk is still not finished
                 return false;
@@ -135,7 +135,7 @@ namespace Blokoti.Game.Scripts
             );
         }
 
-        public virtual void Start()
+        public void Start()
         {
             _getTileManager().RegisterActor(Row, Col, _thisComponent);
         }
