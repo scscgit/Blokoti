@@ -11,6 +11,8 @@ namespace Blokoti.Game.Scripts.Tiles
         public override void OnPlayerEnter(Player player)
         {
             _stepped = true;
+            var animator = GetComponent<Animator>();
+            animator.enabled = true;
         }
 
         public override void OnPlayerExit(Player player)

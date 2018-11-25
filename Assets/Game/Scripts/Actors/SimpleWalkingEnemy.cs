@@ -8,6 +8,7 @@ namespace Blokoti.Game.Scripts.Actors
     {
         public List<GridPosition> walkingTemplate;
         public int walkingTemplateIndex;
+        private bool _end;
 
         private GameManager _gameManager;
 
@@ -25,6 +26,11 @@ namespace Blokoti.Game.Scripts.Actors
 
         public override void Act()
         {
+            if (_end)
+            {
+                return;
+            }
+
             Acting = true;
             var walkingGoal = walkingTemplate[walkingTemplateIndex++];
             if (walkingTemplateIndex >= walkingTemplate.Count)
@@ -36,11 +42,13 @@ namespace Blokoti.Game.Scripts.Actors
             {
                 if (walkingGoal.Column < Col)
                 {
+                    Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     for (var col = Col - 1; col >= walkingGoal.Column; col--)
                     {
                         if (TileManager.GetTile(Row, col) == null)
                         {
                             Moving = false;
+                            _end = true;
                             return;
                         }
                     }
@@ -48,11 +56,13 @@ namespace Blokoti.Game.Scripts.Actors
 
                 if (walkingGoal.Column > Col)
                 {
+                    Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     for (var col = Col + 1; col <= walkingGoal.Column; col++)
                     {
                         if (TileManager.GetTile(Row, col) == null)
                         {
                             Moving = false;
+                            _end = true;
                             return;
                         }
                     }
@@ -62,11 +72,13 @@ namespace Blokoti.Game.Scripts.Actors
             {
                 if (walkingGoal.Row < Row)
                 {
+                    Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 270, 0));
                     for (var row = Row - 1; row >= walkingGoal.Row; row--)
                     {
                         if (TileManager.GetTile(row, Col) == null)
                         {
                             Moving = false;
+                            _end = true;
                             return;
                         }
                     }
@@ -74,11 +86,13 @@ namespace Blokoti.Game.Scripts.Actors
 
                 if (walkingGoal.Row > Row)
                 {
+                    Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     for (var row = Row + 1; row <= walkingGoal.Row; row++)
                     {
                         if (TileManager.GetTile(row, Col) == null)
                         {
                             Moving = false;
+                            _end = true;
                             return;
                         }
                     }
