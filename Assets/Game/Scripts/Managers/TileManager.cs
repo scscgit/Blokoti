@@ -132,6 +132,14 @@ namespace Blokoti.Game.Scripts.Managers
                 {
                     tile.OnPlayerEnter(player);
                 }
+
+                foreach (var otherActorOnTile in onTile)
+                {
+                    if (!(otherActorOnTile is Player))
+                    {
+                        player.OnCollideActor(otherActorOnTile);
+                    }
+                }
             }
             else
             {
