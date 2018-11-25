@@ -1,4 +1,5 @@
-﻿using Blokoti.Game.Scripts.Actors.Players;
+﻿using System;
+using Blokoti.Game.Scripts.Actors.Players;
 using UnityEngine;
 
 namespace Blokoti.Game.Scripts.Tiles
@@ -69,28 +70,35 @@ namespace Blokoti.Game.Scripts.Tiles
 
         private void TransformType(int transformType)
         {
-            switch (transformType)
+            try
             {
-                case 0:
-                    transform.Find("Green").gameObject.SetActive(false);
-                    transform.Find("White").gameObject.SetActive(false);
-                    transform.Find("Grey").gameObject.SetActive(false);
-                    transform.Find("Broken").gameObject.SetActive(true);
-                    Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(OneWalkTile).Name);
-                    var oneWalkTile = gameObject.AddComponent<OneWalkTile>();
-                    var animator = oneWalkTile.transform.Find("Broken").GetComponent<Animator>();
-                    animator.enabled = false;
-                    Destroy(this);
-                    break;
-                case 1:
-                    transform.Find("Green").gameObject.SetActive(false);
-                    transform.Find("White").gameObject.SetActive(false);
-                    transform.Find("Grey").gameObject.SetActive(true);
-                    transform.Find("Broken").gameObject.SetActive(false);
-                    Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(SwitchTile).Name);
-                    gameObject.AddComponent<SwitchTile>();
-                    Destroy(this);
-                    break;
+                switch (transformType)
+                {
+                    case 0:
+                        transform.Find("Green").gameObject.SetActive(false);
+                        transform.Find("White").gameObject.SetActive(false);
+                        transform.Find("Grey").gameObject.SetActive(false);
+                        transform.Find("Broken").gameObject.SetActive(true);
+                        Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(OneWalkTile).Name);
+                        var oneWalkTile = gameObject.AddComponent<OneWalkTile>();
+                        var animator = oneWalkTile.transform.Find("Broken").GetComponent<Animator>();
+                        animator.enabled = false;
+                        Destroy(this);
+                        break;
+                    case 1:
+                        transform.Find("Green").gameObject.SetActive(false);
+                        transform.Find("White").gameObject.SetActive(false);
+                        transform.Find("Grey").gameObject.SetActive(true);
+                        transform.Find("Broken").gameObject.SetActive(false);
+                        Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(SwitchTile).Name);
+                        gameObject.AddComponent<SwitchTile>();
+                        Destroy(this);
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                // Editor feature is not required when children GameObjects aren't available
             }
         }
 
@@ -101,17 +109,24 @@ namespace Blokoti.Game.Scripts.Tiles
                 newType = 0;
             }
 
-            type = newType;
-            switch (newType)
+            try
             {
-                case 0:
-                    transform.Find("Green").gameObject.SetActive(true);
-                    transform.Find("White").gameObject.SetActive(false);
-                    break;
-                case 1:
-                    transform.Find("Green").gameObject.SetActive(false);
-                    transform.Find("White").gameObject.SetActive(true);
-                    break;
+                type = newType;
+                switch (newType)
+                {
+                    case 0:
+                        transform.Find("Green").gameObject.SetActive(true);
+                        transform.Find("White").gameObject.SetActive(false);
+                        break;
+                    case 1:
+                        transform.Find("Green").gameObject.SetActive(false);
+                        transform.Find("White").gameObject.SetActive(true);
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                // Editor feature is not required when children GameObjects aren't available
             }
         }
     }
