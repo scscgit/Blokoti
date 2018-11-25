@@ -17,7 +17,7 @@
         {
             if (_launched)
             {
-                transform.Translate(0, 0.4f, 0);
+                transform.Translate(0, 0.15f, 0);
             }
         }
     }

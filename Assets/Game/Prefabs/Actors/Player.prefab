@@ -167,7 +167,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1352034727928514
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
@@ -515,11 +515,11 @@ Transform:
   m_GameObject: {fileID: 1352034727928514}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4411123650550228}
-  m_Father: {fileID: 4507218011507710}
-  m_RootOrder: 1
+  m_Father: {fileID: 4454353455655570}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4327418872798450
 Transform:
@@ -567,13 +567,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1139908867151392}
-  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
-  m_LocalPosition: {x: 0, y: 2, z: -1}
+  m_LocalRotation: {x: 0.41831043, y: -0.09017009, z: 0.029660676, w: 0.9033305}
+  m_LocalPosition: {x: 1.6700001, y: 4.62, z: -3.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4299383940822428}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 49.561, y: -12.292001, z: -1.9310001}
 --- !u!4 &4452768619868446
 Transform:
   m_ObjectHideFlags: 1
@@ -600,6 +600,7 @@ Transform:
   m_Children:
   - {fileID: 4059154559061762}
   - {fileID: 4507218011507710}
+  - {fileID: 4299383940822428}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -628,7 +629,6 @@ Transform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 4014849143877596}
-  - {fileID: 4299383940822428}
   m_Father: {fileID: 4454353455655570}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -820,9 +820,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
-  field of view: 90
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6367c99c3c7a02546ac9740959a360db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepSpeed: 0.04
+  stepSpeed: 0.05
 --- !u!137 &137331640830719022
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
