@@ -50,21 +50,25 @@ namespace Blokoti.Game.Scripts.Actors.Players
             {
                 targetRow--;
                 move = true;
+                Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 270, 0));
             }
             else if (horizontal > 0)
             {
                 targetRow++;
                 move = true;
+                Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 90, 0));
             }
             else if (vertical < 0)
             {
                 targetCol--;
                 move = true;
+                Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
             }
             else if (vertical > 0)
             {
                 targetCol++;
                 move = true;
+                Transform.Find("Mesh").localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
             }
 
             if (move)

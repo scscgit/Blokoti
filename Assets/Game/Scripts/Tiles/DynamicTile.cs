@@ -78,7 +78,7 @@ namespace Blokoti.Game.Scripts.Tiles
                     transform.Find("Broken").gameObject.SetActive(true);
                     Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(OneWalkTile).Name);
                     var oneWalkTile = gameObject.AddComponent<OneWalkTile>();
-                    var animator = oneWalkTile.GetComponent<Animator>();
+                    var animator = oneWalkTile.transform.Find("Broken").GetComponent<Animator>();
                     animator.enabled = false;
                     Destroy(this);
                     break;
@@ -88,7 +88,7 @@ namespace Blokoti.Game.Scripts.Tiles
                     transform.Find("Grey").gameObject.SetActive(true);
                     transform.Find("Broken").gameObject.SetActive(false);
                     Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(SwitchTile).Name);
-                    var switchTile = gameObject.AddComponent<SwitchTile>();
+                    gameObject.AddComponent<SwitchTile>();
                     Destroy(this);
                     break;
             }

@@ -11,16 +11,23 @@ namespace Blokoti.Game.Scripts.Tiles
         public override void OnPlayerEnter(Player player)
         {
             _stepped = true;
-            var animator = GetComponent<Animator>();
-            animator.enabled = true;
         }
 
         public override void OnPlayerExit(Player player)
         {
             if (_stepped)
             {
-                Destroy();
+                var animator = Transform.Find("Broken").GetComponent<Animator>();
+                animator.speed *= 5;
+                animator.enabled = true;
+                TileManager.UnregisterTile(Row, Col);
             }
         }
+
+//        private IEnumerator DelayedDestroy()
+//        {
+//            yield return new WaitForSeconds(2);
+//            Destroy();
+//        }
     }
 }
