@@ -42,6 +42,11 @@ namespace Blokoti.Game.Scripts.Tiles
                 ApplyType(type + 1);
             }
 
+            if (_isSelected && Input.GetMouseButtonDown(1))
+            {
+                TransformType(type);
+            }
+
             if (transform.Find("Grey").gameObject.activeInHierarchy.Equals(true))
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -58,6 +63,18 @@ namespace Blokoti.Game.Scripts.Tiles
                         transform.position -= new Vector3(0, 0.25F, 0);
                     }
                 }
+            }
+        }
+
+        private void TransformType(int transformType)
+        {
+            switch (transformType)
+            {
+                case 0:
+                    Debug.Log("Transformed tile " + Row + ":" + Col + " into " + typeof(OneWalkTile).Name);
+                    gameObject.AddComponent<OneWalkTile>();
+                    Destroy(this);
+                    break;
             }
         }
 
